@@ -135,9 +135,9 @@ I used a Decision Tree Classifier because:
 ### Settings I Used
 ```python
 DecisionTreeClassifier(
-    max_depth=5,
-    min_samples_split=20,
-    min_samples_leaf=10,
+    max_depth=10,
+    min_samples_split=10,
+    min_samples_leaf=5,
     random_state=42
 )
 ```

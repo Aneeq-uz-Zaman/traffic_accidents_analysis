@@ -54,7 +54,7 @@ st.markdown("""
 def load_data():
     """Load the traffic accidents dataset"""
     df = pd.read_csv('traffic_accidents.csv')
-    df['crash_date'] = pd.to_datetime(df['crash_date'])
+    df['crash_date'] = pd.to_datetime(df['crash_date'], format='mixed', errors='coerce')
     return df
 
 @st.cache_resource
@@ -154,7 +154,7 @@ def main():
         
         # Dataset preview
         st.subheader("📋 Dataset Preview")
-        st.dataframe(df.head(10), use_container_width=True)
+        st.dataframe(df.head(10), width='stretch')
         
         st.markdown("---")
         
@@ -179,7 +179,7 @@ def main():
                     color='count',
                     color_continuous_scale='Blues'
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             
             elif viz_option == "Accidents by Hour":
                 hourly_data = df['crash_hour'].value_counts().sort_index()
@@ -190,7 +190,7 @@ def main():
                     markers=True
                 )
                 fig.update_traces(line_color='#ff7f0e', line_width=3)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             
             elif viz_option == "Accidents by Day of Week":
                 days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -202,7 +202,7 @@ def main():
                     color=daily_data.values,
                     color_continuous_scale='Viridis'
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             
             elif viz_option == "Weather Conditions":
                 weather_data = df['weather_condition'].value_counts().head(10)
@@ -214,7 +214,7 @@ def main():
                     color=weather_data.values,
                     color_continuous_scale='Greens'
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             
             elif viz_option == "Crash Types":
                 crash_data = df['first_crash_type'].value_counts().head(10)
@@ -222,7 +222,7 @@ def main():
                     values=crash_data.values, names=crash_data.index,
                     title="Top 10 Crash Types Distribution"
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             
             elif viz_option == "Accidents by Month":
                 months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
@@ -235,7 +235,7 @@ def main():
                     color=monthly_data.values,
                     color_continuous_scale='Reds'
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             
             elif viz_option == "Lighting Conditions":
                 lighting_data = df['lighting_condition'].value_counts()
@@ -243,7 +243,7 @@ def main():
                     values=lighting_data.values, names=lighting_data.index,
                     title="Lighting Conditions During Accidents"
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
         
         with col2:
             st.subheader("📊 Statistics")
@@ -347,7 +347,7 @@ def main():
         st.subheader("🎯 Feature Importance")
         
         if os.path.exists('feature_importance.png'):
-            st.image('feature_importance.png', caption='Most Important Features for Prediction', use_container_width=True)
+            st.image('feature_importance.png', caption='Most Important Features for Prediction', width='stretch')
         else:
             st.warning("⚠️ Feature importance chart not found. Please run the notebook first.")
     
@@ -441,7 +441,7 @@ def main():
             )
         
         # Predict button
-        if st.button("🔮 Predict Crash Severity", type="primary", use_container_width=True):
+        if st.button("🔮 Predict Crash Severity", type="primary", width='stretch'):
             # Prepare input data
             input_data = {
                 'traffic_control_device': traffic_control,
@@ -471,9 +471,12 @@ def main():
                 else:
                     input_encoded.append(input_data[col])
             
+            # Convert to DataFrame with feature names to avoid sklearn warning
+            input_df = pd.DataFrame([input_encoded], columns=feature_columns)
+            
             # Make prediction
-            prediction = model.predict([input_encoded])[0]
-            prediction_proba = model.predict_proba([input_encoded])[0]
+            prediction = model.predict(input_df)[0]
+            prediction_proba = model.predict_proba(input_df)[0]
             
             # Decode prediction
             predicted_severity = label_encoders['most_severe_injury'].inverse_transform([prediction])[0]
@@ -498,7 +501,7 @@ def main():
                     'Probability': prediction_proba * 100
                 }).sort_values('Probability', ascending=False)
                 
-                st.dataframe(prob_df.style.format({'Probability': '{:.2f}%'}), use_container_width=True)
+                st.dataframe(prob_df.style.format({'Probability': '{:.2f}%'}), width='stretch')
             
             # Severity interpretation
             st.markdown("---")
@@ -560,7 +563,7 @@ def main():
                     text='Accuracy'
                 )
                 fig.update_traces(texttemplate='%{text:.2%}', textposition='outside')
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             
             with col2:
                 st.write("**Model Scores:**")
@@ -590,7 +593,7 @@ def main():
                     color_continuous_scale='Viridis'
                 )
                 fig.update_layout(yaxis={'categoryorder': 'total ascending'})
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             
             with col2:
                 st.write("**Top 5 Features:**")
@@ -609,11 +612,11 @@ def main():
         
         with col1:
             if os.path.exists('severity_distribution.png'):
-                st.image('severity_distribution.png', caption='Target Distribution', use_container_width=True)
+                st.image('severity_distribution.png', caption='Target Distribution', width='stretch')
         
         with col2:
             if os.path.exists('crashes_by_hour.png'):
-                st.image('crashes_by_hour.png', caption='Temporal Patterns', use_container_width=True)
+                st.image('crashes_by_hour.png', caption='Temporal Patterns', width='stretch')
         
         # Model description
         st.markdown("---")

@@ -34,7 +34,7 @@ I'm using a CSV file called `traffic_accidents.csv` with accident records. It ha
 
 2. Open command prompt and go to the project folder:
    ```cmd
-   cd "c:\Users\User\Desktop\New folder"
+   cd "d:\PYTHON\IDS\IDS_PROJECT"
    ```
 
 3. Install the required libraries:
@@ -54,7 +54,7 @@ I'm using a CSV file called `traffic_accidents.csv` with accident records. It ha
 
 ### Step 1: Train the Model
 
-I recommend using the Jupyter notebook because you can see everything step by step:
+Run the Jupyter notebook to train the model and see everything step by step:
 
 ```cmd
 jupyter notebook traffic_analysis.ipynb
@@ -62,10 +62,7 @@ jupyter notebook traffic_analysis.ipynb
 
 Just run each cell and you'll see the results right away. It's easier to understand what's happening.
 
-If you want to run everything at once without stopping, you can use the Python script instead:
-```cmd
-python train_model.py
-```
+**Note:** The notebook is the primary way to train the model. Run all cells sequentially to train and save the models.
 
 The training process:
 - Loads the accident data
@@ -168,16 +165,16 @@ The model uses 12 key features:
 ## Files in This Project
 
 ```
-New folder/
+IDS_PROJECT/
 │
-├── traffic_accidents.csv          # Dataset
-├── train_model.py                 # Model training script
-├── traffic_analysis.ipynb         # Jupyter Notebook (comprehensive analysis)
+├── traffic_accidents.csv          # Dataset (2000+ accident records)
+├── traffic_analysis.ipynb         # Jupyter Notebook (model training & analysis)
 ├── app.py                         # Streamlit web application
 ├── requirements.txt               # Python dependencies
 ├── README.md                      # This file
+├── PROJECT_EXPLANATION.md         # Detailed project explanation
+├── RUN_PROJECT.md                 # Step-by-step running guide
 │
-├── traffic_model.pkl              # Trained model (generated)
 ├── all_models.pkl                 # All trained models (generated)
 ├── best_model.pkl                 # Best model (generated)
 ├── label_encoders.pkl             # Feature encoders (generated)
@@ -189,10 +186,7 @@ New folder/
     ├── comprehensive_analysis.png
     ├── model_comparison.png
     ├── confusion_matrices.png
-    ├── feature_importance_models.png
-    ├── learning_curves.png
-    ├── roc_curves.png
-    └── final_summary.png
+    └── feature_importance.png
 ```
 
 ## Common Problems
@@ -204,10 +198,11 @@ pip install -r requirements.txt
 ```
 
 **If the app says "model not found":**
-You need to train the model first:
+You need to train the model first by running the Jupyter notebook:
 ```cmd
-python train_model.py
+jupyter notebook traffic_analysis.ipynb
 ```
+Then run all cells in the notebook to generate the model files.
 
 **If Streamlit won't start:**
 Try a different port:
@@ -258,11 +253,43 @@ Things I want to try:
 - Making the web app better
 - Maybe deploy it online
 
+## Project Structure Details
+
+All project files are included:
+- **traffic_accidents.csv** - Main dataset with 2000+ accident records
+- **traffic_analysis.ipynb** - Complete notebook for training and analysis
+- **app.py** - Interactive Streamlit dashboard
+- **requirements.txt** - All Python dependencies
+- **README.md** - This guide
+- **PROJECT_EXPLANATION.md** - Detailed technical explanation
+- **RUN_PROJECT.md** - Step-by-step instructions for beginners
+
+Generated files after training (created when you run the notebook):
+- Model files (.pkl) containing trained machine learning models
+- CSV files with metrics and feature importance
+- PNG images with visualizations and charts
+
+## Additional Resources
+
+For more detailed information:
+- **PROJECT_EXPLANATION.md** - Complete technical explanation of the machine learning approach
+- **RUN_PROJECT.md** - Detailed step-by-step guide with troubleshooting
+
 ## Notes
 
-This is a class project for Introduction to Data Science. I used:
-- Streamlit for the web app
-- Scikit-learn for machine learning
-- Matplotlib and Plotly for charts
+This is a class project for Introduction to Data Science. Technologies used:
+- **Python 3.8+** - Programming language
+- **Streamlit** - Interactive web application framework
+- **Scikit-learn** - Machine learning library
+- **Pandas & NumPy** - Data manipulation
+- **Matplotlib, Seaborn & Plotly** - Data visualization
+- **Jupyter Notebook** - Interactive development environment
 
-If you have questions, check the troubleshooting section or make sure all files are in the right folder.
+## Quick Start Summary
+
+1. Install dependencies: `pip install -r requirements.txt`
+2. Train model: `jupyter notebook traffic_analysis.ipynb` (run all cells)
+3. Launch app: `streamlit run app.py`
+4. Access at: `http://localhost:8501`
+
+If you have questions, check the troubleshooting section or refer to **RUN_PROJECT.md** for detailed guidance.
